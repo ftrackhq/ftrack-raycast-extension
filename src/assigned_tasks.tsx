@@ -69,17 +69,15 @@ export default function AssignedTasksCommand() {
           }}
           accessories={[
             {
-              // @ts-expect-error string color is not included in tag type
               tag: { value: task.priority?.name, color: task.priority?.color },
             },
-            // @ts-expect-error string color is not included in tag type
             { tag: { value: task.status?.name, color: task.status?.color } },
             task.end_date ? { date: task.end_date.toDate() } : {},
           ]}
           actions={
             <ActionPanel>
               <Action.Push
-                title="Change status"
+                title="Change Status"
                 icon={Icon.ArrowRightCircle}
                 target={
                   <ChangeStatusCommand

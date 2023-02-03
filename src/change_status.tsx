@@ -103,7 +103,7 @@ export default function ChangeStatusCommand({
           actions={
             <ActionPanel>
               <Action
-                title="Change status"
+                title="Change Status"
                 onAction={() => {
                   mutateEntity({ status_id: status.id });
                 }}
