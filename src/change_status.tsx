@@ -14,7 +14,6 @@ import { operation, Session } from "@ftrack/api";
 import { updateEntity } from "./util/updateEntity";
 import { Status } from "./types";
 
-
 async function getStatusOptions({
   session,
   entityType,
