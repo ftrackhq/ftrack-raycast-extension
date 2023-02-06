@@ -19,7 +19,7 @@ async function getStatusOptions({
   entityType,
   entityId,
 }: {
-  session: any;
+  session: Session;
   entityType: string;
   entityId: string;
 }) {
