@@ -1,3 +1,4 @@
+// :copyright: Copyright (c) 2023 ftrack
 import { Session } from "@ftrack/api";
 import { getPreferenceValues } from "@raycast/api";
 import { Preferences } from "../types";

@@ -1,3 +1,4 @@
+// :copyright: Copyright (c) 2023 ftrack
 import { Session } from "@ftrack/api";
 
 export async function updateEntity({

@@ -1,3 +1,4 @@
+// :copyright: Copyright (c) 2023 ftrack
 import "cross-fetch/polyfill";
 import {
   ActionPanel,
@@ -9,7 +10,7 @@ import {
   Icon,
 } from "@raycast/api";
 import { usePromise } from "@raycast/utils";
-import { buildExpression } from "./utils";
+import { buildExpression } from "./util/buildExpression";
 import ChangeStatusCommand from "./change_status";
 import { session } from "./util/session";
 import { Preferences, Task } from "./types";

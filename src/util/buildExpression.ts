@@ -1,11 +1,6 @@
-import { sortBy, sortedUniq } from "lodash";
+// :copyright: Copyright (c) 2023 ftrack
 
-/**
- * Return *value* as string, joined by separator* if array.
- **
- * @param {string | string[]} arr
- * @returns {string}
- */
+/** Return *value* as string, joined by separator* if array. */
 function arrayToString(value: string | string[], separator = ", ") {
   if (!value) {
     return "";
@@ -18,18 +13,7 @@ function arrayToString(value: string | string[], separator = ", ") {
   return value.join(separator);
 }
 
-/**
- *
- * @param {{
- *  entityType: string,
- *  projection: string[],
- *  order: string,
- *  filter: string | string[],
- *  limit: number,
- *  offset: number,
- * }} query
- * @returns
- */
+/** Build ftrack API query expression from options. */
 export function buildExpression({
   entityType,
   projection,
@@ -45,7 +29,7 @@ export function buildExpression({
   limit?: number;
   offset?: number;
 }) {
-  const sortedProjection = sortedUniq(sortBy(projection));
+  const sortedProjection = [...new Set(projection)].sort();
   const projectionsLabel = sortedProjection.join(", ");
   const expression = `select ${projectionsLabel}
             from ${entityType}
