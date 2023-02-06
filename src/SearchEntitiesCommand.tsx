@@ -1,0 +1,66 @@
+// :copyright: Copyright (c) 2023 ftrack
+import "cross-fetch/polyfill";
+import { Icon, List } from "@raycast/api";
+import { usePromise } from "@raycast/utils";
+import { buildExpression } from "./util/buildExpression";
+import { configuration } from "./EntityListItem";
+import { session } from "./util/session";
+import { useState } from "react";
+
+type SearchableEntityTypes = keyof typeof configuration;
+
+async function searchEntities(entityType: SearchableEntityTypes, searchText = '') {
+  console.debug(`Searching ${entityType}: ${searchText}`);
+  const expression = buildExpression({
+    entityType,
+    projection: configuration[entityType].projection,
+    order: configuration[entityType].order,
+    filter: "",
+    limit: 100,
+    offset: 0,
+  });
+
+  const response = await session.search({
+    expression,
+    entityType,
+    terms: searchText.split(' '),
+  });
+
+  console.debug(`Found ${response.data.length} items`);
+  return response.data;
+}
+
+export default function SearchEntitiesCommand({
+  entityType = "Project",
+  defaultSearchText = "",
+}: {
+  entityType: SearchableEntityTypes;
+  defaultSearchText?: string;
+}) {
+  const [searchText, setSearchText] = useState(defaultSearchText);
+  const { data, isLoading } = usePromise(searchEntities, [
+    entityType,
+    searchText,
+  ]);
+
+  return (
+    <List onSearchTextChange={setSearchText} isLoading={isLoading}>
+      {data?.map((entity: any) => {
+        const entityConfig = configuration[entityType];
+        return (
+          <entityConfig.ListItem
+            key={entity.id}
+            configuration={entityConfig}
+            entity={entity}
+          />
+        );
+      })}
+      {data?.length === 0 ? (
+        <List.EmptyView
+          icon={Icon.MagnifyingGlass}
+          title={`No ${configuration[entityType].namePlural} found`}
+        />
+      ) : null}
+    </List>
+  );
+}

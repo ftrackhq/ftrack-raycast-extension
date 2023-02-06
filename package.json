@@ -15,6 +15,24 @@
       "title": "Assigned Tasks",
       "description": "Show assigned tasks",
       "mode": "view"
+    },
+    {
+      "name": "search_projects",
+      "title": "Projects",
+      "description": "Search ftrack projects",
+      "mode": "view"
+    },
+    {
+      "name": "search_versions",
+      "title": "Versions",
+      "description": "Search ftrack projects",
+      "mode": "view"
+    },
+    {
+      "name": "search_typedcontext",
+      "title": "Objects",
+      "description": "Search ftrack objects",
+      "mode": "view"
     }
   ],
   "preferences": [
