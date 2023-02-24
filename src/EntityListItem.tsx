@@ -102,6 +102,7 @@ export const configuration = {
           title="Play"
           icon={Icon.Play}
           url={`${preferences.ftrackServerUrl}/player/version/${entity.id}`}
+          shortcut={{ modifiers: ["cmd"], key: "p" }}
         />
         <Action.Push
           title="Change Status"
@@ -113,6 +114,12 @@ export const configuration = {
               onStatusChanged={revalidate}
             />
           }
+          shortcut={{ modifiers: ["cmd"], key: "s" }}
+        />
+        <Action.CopyToClipboard
+          title="Copy Entity ID"
+          content={entity.id}
+          shortcut={{ modifiers: ["cmd"], key: "i" }}
         />
       </ActionPanel>
     ),
@@ -151,6 +158,7 @@ export const configuration = {
           title="Play"
           icon={Icon.Play}
           url={`${preferences.ftrackServerUrl}/player/context/${entity.id}`}
+          shortcut={{ modifiers: ["cmd"], key: "p" }}
         />
         <Action.Push
           title="Search Versions"
@@ -160,6 +168,7 @@ export const configuration = {
               defaultSearchText={`context_id:${entity.id}`}
             />
           }
+          shortcut={{ modifiers: ["cmd"], key: "v" }}
         />
         <Action.Push
           title="Search Objects"
@@ -169,6 +178,12 @@ export const configuration = {
               defaultSearchText={`context_id:${entity.id}`}
             />
           }
+          shortcut={{ modifiers: ["cmd"], key: "o" }}
+        />
+        <Action.CopyToClipboard
+          title="Copy Entity ID"
+          content={entity.id}
+          shortcut={{ modifiers: ["cmd"], key: "i" }}
         />
       </ActionPanel>
     ),
@@ -230,6 +245,12 @@ export const configuration = {
         <Action.OpenInBrowser
           url={`${preferences.ftrackServerUrl}/#itemId=home&slideEntityType=task&slideEntityId=${entity.id}`}
         />
+        <Action.OpenInBrowser
+          title="Play"
+          icon={Icon.Play}
+          url={`${preferences.ftrackServerUrl}/player/context/${entity.id}`}
+          shortcut={{ modifiers: ["cmd"], key: "p" }}
+        />
         {entity.object_type.is_statusable ? (
           <Action.Push
             title="Change Status"
@@ -241,13 +262,9 @@ export const configuration = {
                 onStatusChanged={revalidate}
               />
             }
+            shortcut={{ modifiers: ["cmd"], key: "s" }}
           />
         ) : null}
-        <Action.OpenInBrowser
-          title="Play"
-          icon={Icon.Play}
-          url={`${preferences.ftrackServerUrl}/player/context/${entity.id}`}
-        />
         <Action.Push
           title="Search Versions"
           icon={Icon.MagnifyingGlass}
@@ -256,6 +273,7 @@ export const configuration = {
               defaultSearchText={`context_id:${entity.id}`}
             />
           }
+          shortcut={{ modifiers: ["cmd"], key: "v" }}
         />
         <Action.Push
           title="Search Objects"
@@ -265,6 +283,12 @@ export const configuration = {
               defaultSearchText={`context_id:${entity.id}`}
             />
           }
+          shortcut={{ modifiers: ["cmd"], key: "o" }}
+        />
+        <Action.CopyToClipboard
+          title="Copy Entity ID"
+          content={entity.id}
+          shortcut={{ modifiers: ["cmd"], key: "i" }}
         />
       </ActionPanel>
     ),
