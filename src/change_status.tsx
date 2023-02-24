@@ -10,7 +10,7 @@ import {
 } from "@raycast/api";
 import { usePromise } from "@raycast/utils";
 import { buildExpression } from "./util/buildExpression";
-import { operation, Session } from "@ftrack/api";
+import { operation } from "@ftrack/api";
 import { updateEntity } from "./util/updateEntity";
 import { Status } from "./types";
 import { session } from "./util/session";
