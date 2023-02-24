@@ -1,3 +1,4 @@
+import { Entity } from "@ftrack/api";
 import {
   Color,
   List,
@@ -9,28 +10,51 @@ import {
 } from "@raycast/api";
 // import SearchObjectsCommand from "./search_typedcontext";
 // import SearchVersionsCommand from "./search_versions";
-import { Preferences } from "./types";
+import { AssetVersionEntity, Preferences, ProjectEntity, SearchableEntity, TypedContextEntity } from "./types";
 
 const preferences = getPreferenceValues<Preferences>();
 
-function toSentenceCase(value) {
+function toSentenceCase(value: string) {
   return value.charAt(0).toUpperCase() + value.substring(1);
 }
 
-function EntityListItem({ entity, configuration, ...props }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+interface EntityListItemProps<EntityType = any> {
+  entity: EntityType
+  configuration: EntityListItemConfiguration<EntityType>
+}
+
+export function EntityListItem({
+  entity,
+  configuration,
+  ...props
+}: EntityListItemProps) {
   return (
     <List.Item
       title={configuration.title(entity)}
       subtitle={configuration.subtitle?.(entity)}
-      icon={{
-        source: configuration.thumbnail(entity),
-        mask: Image.Mask.Circle,
-      }}
+      icon={
+        configuration.thumbnail && {
+          source: configuration.thumbnail?.(entity),
+          mask: Image.Mask.RoundedRectangle,
+        }
+      }
       accessories={configuration.accessories?.(entity)}
       actions={configuration.actions?.(entity)}
       {...props}
     />
   );
+}
+
+interface EntityListItemConfiguration<EntityType = SearchableEntity> {
+  namePlural: string;
+  projection: string[];
+  order: string;
+  title: (entity: EntityType) => List.Item.Props["title"];
+  subtitle?: (entity: EntityType) => List.Item.Props["subtitle"];
+  thumbnail?: (entity: EntityType) => Image.Source;
+  accessories?: (entity: EntityType) => List.Item.Props["accessories"];
+  actions?: (entity: EntityType) => List.Item.Props["actions"];
 }
 
 export const configuration = {
@@ -68,8 +92,7 @@ export const configuration = {
         />
       </ActionPanel>
     ),
-    ListItem: EntityListItem,
-  },
+  } as EntityListItemConfiguration<AssetVersionEntity>,
   Project: {
     namePlural: "projects",
     projection: [
@@ -127,8 +150,7 @@ export const configuration = {
         */}
       </ActionPanel>
     ),
-    ListItem: EntityListItem,
-  },
+  } as EntityListItemConfiguration<ProjectEntity>,
   TypedContext: {
     namePlural: "objects",
     projection: [
@@ -162,6 +184,5 @@ export const configuration = {
         />
       </ActionPanel>
     ),
-    ListItem: EntityListItem,
-  },
+  } as EntityListItemConfiguration<TypedContextEntity>,
 };

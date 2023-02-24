@@ -33,3 +33,31 @@ interface Task extends Entity {
     toDate: () => Date;
   };
 }
+
+
+interface AssetVersionEntity extends Entity {
+  id: string;
+  asset: { name: string };
+  link: { name: string }[];
+  version: string;
+  thumbnail_url: { value: string };
+  status: { name: string; color: string };
+}
+
+interface ProjectEntity extends Entity {
+  full_name: string;
+  thumbnail_url: { value: string };
+  status: string;
+  project_schema: { name: string };
+  end_date: { toDate: () => Date };
+}
+
+interface TypedContextEntity extends Entity {
+  name: string;
+  link: { name: string }[];
+  thumbnail_url: { value: string };
+  status: { name: string; color: string };
+  end_date: { toDate: () => Date };
+}
+
+export type SearchableEntity = AssetVersionEntity | ProjectEntity | TypedContextEntity;

@@ -3,13 +3,17 @@ import "cross-fetch/polyfill";
 import { Icon, List } from "@raycast/api";
 import { usePromise } from "@raycast/utils";
 import { buildExpression } from "./util/buildExpression";
-import { configuration } from "./EntityListItem";
+import { configuration, EntityListItem } from "./EntityListItem";
 import { session } from "./util/session";
 import { useState } from "react";
+import { SearchableEntity } from "./types";
 
 type SearchableEntityTypes = keyof typeof configuration;
 
-async function searchEntities(entityType: SearchableEntityTypes, searchText = '') {
+async function searchEntities(
+  entityType: SearchableEntityTypes,
+  searchText = ""
+) {
   console.debug(`Searching ${entityType}: ${searchText}`);
   const expression = buildExpression({
     entityType,
@@ -23,11 +27,11 @@ async function searchEntities(entityType: SearchableEntityTypes, searchText = ''
   const response = await session.search({
     expression,
     entityType,
-    terms: searchText.split(' '),
+    terms: searchText.split(" "),
   });
 
   console.debug(`Found ${response.data.length} items`);
-  return response.data;
+  return response.data as SearchableEntity[];
 }
 
 export default function SearchEntitiesCommand({
@@ -45,10 +49,10 @@ export default function SearchEntitiesCommand({
 
   return (
     <List onSearchTextChange={setSearchText} isLoading={isLoading}>
-      {data?.map((entity: any) => {
+      {data?.map((entity) => {
         const entityConfig = configuration[entityType];
         return (
-          <entityConfig.ListItem
+          <EntityListItem
             key={entity.id}
             configuration={entityConfig}
             entity={entity}
