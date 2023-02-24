@@ -10,7 +10,13 @@ import {
 } from "@raycast/api";
 // import SearchObjectsCommand from "./search_typedcontext";
 // import SearchVersionsCommand from "./search_versions";
-import { AssetVersionEntity, Preferences, ProjectEntity, SearchableEntity, TypedContextEntity } from "./types";
+import {
+  AssetVersionEntity,
+  Preferences,
+  ProjectEntity,
+  SearchableEntity,
+  TypedContextEntity,
+} from "./types";
 
 const preferences = getPreferenceValues<Preferences>();
 
@@ -20,8 +26,8 @@ function toSentenceCase(value: string) {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface EntityListItemProps<EntityType = any> {
-  entity: EntityType
-  configuration: EntityListItemConfiguration<EntityType>
+  entity: EntityType;
+  configuration: EntityListItemConfiguration<EntityType>;
 }
 
 export function EntityListItem({
@@ -158,8 +164,16 @@ export const configuration = {
       "name",
       "link",
       "thumbnail_url",
+      "type.name",
+      "type.color",
+      "object_type.name",
+      "object_type.is_typeable",
+      "object_type.is_statusable",
+      "object_type.is_prioritizable",
       "status.name",
       "status.color",
+      "priority.name",
+      "priority.color",
       "end_date",
     ],
     order: "name",
@@ -167,9 +181,32 @@ export const configuration = {
     subtitle: (entity) => entity.link.map((item) => item.name).join("/"),
     thumbnail: (entity) => entity.thumbnail_url.value,
     accessories: (entity) => [
-      { tag: { value: entity.status.name, color: entity.status.color } },
+      {
+        tag: {
+          value: entity.object_type.is_typeable
+            ? `${entity.type.name} (${entity.object_type.name})`
+            : entity.object_type.name,
+          color: entity.object_type.is_typeable ? entity.type.color : null,
+        },
+      },
+      {
+        tag: {
+          value: entity.object_type.is_prioritizable
+            ? entity.priority.name
+            : null,
+          color: entity.object_type.is_prioritizable
+            ? entity.priority.color
+            : null,
+        },
+      },
       {
         date: entity.end_date?.toDate(),
+      },
+      {
+        tag: {
+          value: entity.object_type.is_statusable ? entity.status.name : null,
+          color: entity.object_type.is_statusable ? entity.status.color : null,
+        },
       },
     ],
     actions: (entity) => (

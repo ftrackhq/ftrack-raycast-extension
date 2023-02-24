@@ -34,7 +34,6 @@ interface Task extends Entity {
   };
 }
 
-
 interface AssetVersionEntity extends Entity {
   id: string;
   asset: { name: string };
@@ -57,7 +56,18 @@ interface TypedContextEntity extends Entity {
   link: { name: string }[];
   thumbnail_url: { value: string };
   status: { name: string; color: string };
+  priority: { name: string; color: string };
+  type: { name: string; color: string };
+  object_type: {
+    name: string;
+    is_statusable: boolean;
+    is_prioritizable: boolean;
+    is_typeable: boolean;
+  };
   end_date: { toDate: () => Date };
 }
 
-export type SearchableEntity = AssetVersionEntity | ProjectEntity | TypedContextEntity;
+export type SearchableEntity =
+  | AssetVersionEntity
+  | ProjectEntity
+  | TypedContextEntity;
