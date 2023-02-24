@@ -8,6 +8,8 @@ import {
   Icon,
 } from "@raycast/api";
 import ChangeStatusCommand from "./change_status";
+import SearchListCommand from "./search_list";
+import SearchReviewSessionsCommand from "./search_review_sessions";
 import SearchTypedContextCommand from "./search_typed_context";
 import SearchVersionsCommand from "./search_versions";
 
@@ -181,7 +183,29 @@ export const configuration = {
               contextId={entity.id}
             />
           }
-          shortcut={{ modifiers: ["cmd"], key: "o" }}
+          shortcut={{ modifiers: ["cmd", "opt"], key: "o" }}
+        />
+        <Action.Push
+          title="Search Reviews"
+          icon={Icon.MagnifyingGlass}
+          target={
+            <SearchReviewSessionsCommand
+              placeholder={`Search Reviews in ${entity.full_name}`}
+              contextId={entity.id}
+            />
+          }
+          shortcut={{ modifiers: ["cmd", "opt"], key: "r" }}
+        />
+        <Action.Push
+          title="Search Lists"
+          icon={Icon.MagnifyingGlass}
+          target={
+            <SearchListCommand
+              placeholder={`Search Lists in ${entity.full_name}`}
+              contextId={entity.id}
+            />
+          }
+          shortcut={{ modifiers: ["cmd", "opt"], key: "l" }}
         />
         <Action.CopyToClipboard
           title="Copy Entity ID"
@@ -363,7 +387,7 @@ export const configuration = {
               contextId={entity.id}
             />
           }
-          shortcut={{ modifiers: ["cmd"], key: "o" }}
+          shortcut={{ modifiers: ["cmd", "opt"], key: "o" }}
         />
         <Action.CopyToClipboard
           title="Copy Entity ID"
