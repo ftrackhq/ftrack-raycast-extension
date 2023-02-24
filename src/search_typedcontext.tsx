@@ -2,6 +2,6 @@
 import "cross-fetch/polyfill";
 import SearchEntitiesCommand from "./SearchEntitiesCommand";
 
-export default function SearchProjectsCommand({ ...props }) {
+export default function SearchTypedContextCommand({ ...props }) {
   return <SearchEntitiesCommand entityType="TypedContext" {...props} />;
 }

@@ -1,4 +1,3 @@
-import { Entity } from "@ftrack/api";
 import {
   Color,
   List,
@@ -8,6 +7,8 @@ import {
   getPreferenceValues,
   Icon,
 } from "@raycast/api";
+import SearchTypedContextCommand from "./search_typedcontext";
+import SearchVersionsCommand from "./search_versions";
 // import SearchObjectsCommand from "./search_typedcontext";
 // import SearchVersionsCommand from "./search_versions";
 import {
@@ -134,13 +135,12 @@ export const configuration = {
           icon={Icon.Play}
           url={`${preferences.ftrackServerUrl}/player/context/${entity.id}`}
         />
-        {/*
         <Action.Push
           title="Search Versions"
           icon={Icon.MagnifyingGlass}
           target={
             <SearchVersionsCommand
-              defaultSearchText={`project_id:${entity.id}`}
+              defaultSearchText={`context_id:${entity.id}`}
             />
           }
         />
@@ -148,12 +148,11 @@ export const configuration = {
           title="Search Objects"
           icon={Icon.MagnifyingGlass}
           target={
-            <SearchObjectsCommand
-              defaultSearchText={`project_id:${entity.id}`}
+            <SearchTypedContextCommand
+              defaultSearchText={`context_id:${entity.id}`}
             />
           }
         />
-        */}
       </ActionPanel>
     ),
   } as EntityListItemConfiguration<ProjectEntity>,
@@ -218,6 +217,24 @@ export const configuration = {
           title="Play"
           icon={Icon.Play}
           url={`${preferences.ftrackServerUrl}/player/context/${entity.id}`}
+        />
+        <Action.Push
+          title="Search Versions"
+          icon={Icon.MagnifyingGlass}
+          target={
+            <SearchVersionsCommand
+              defaultSearchText={`context_id:${entity.id}`}
+            />
+          }
+        />
+        <Action.Push
+          title="Search Objects"
+          icon={Icon.MagnifyingGlass}
+          target={
+            <SearchTypedContextCommand
+              defaultSearchText={`context_id:${entity.id}`}
+            />
+          }
         />
       </ActionPanel>
     ),

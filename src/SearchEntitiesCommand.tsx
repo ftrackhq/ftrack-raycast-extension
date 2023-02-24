@@ -10,6 +10,7 @@ import { SearchableEntity } from "./types";
 
 type SearchableEntityTypes = keyof typeof configuration;
 
+const searchRegex = new RegExp("(?:context_id:([\\w-]+))?(.*)");
 async function searchEntities(
   entityType: SearchableEntityTypes,
   searchText = ""
@@ -24,10 +25,18 @@ async function searchEntities(
     offset: 0,
   });
 
+  const matches = searchText.match(searchRegex);
+  const contextId = matches?.[1];
+  const terms = (matches?.[2] ?? '').split(" ") ?? [];
+  console.debug(
+    `contextId=${contextId}, terms=${terms}`
+  );
+
   const response = await session.search({
     expression,
     entityType,
-    terms: searchText.split(" "),
+    terms,
+    contextId,
   });
 
   console.debug(`Found ${response.data.length} items`);
