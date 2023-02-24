@@ -67,7 +67,16 @@ interface TypedContextEntity extends Entity {
   end_date: { toDate: () => Date };
 }
 
+interface ReviewSessionEntity extends Entity {
+  id: string;
+  name: string;
+  is_open: boolean;
+  thumbnail_url: { value: string };
+  created_at: { toDate: () => Date };
+}
+
 export type SearchableEntity =
   | AssetVersionEntity
   | ProjectEntity
-  | TypedContextEntity;
+  | TypedContextEntity
+  | ReviewSessionEntity;

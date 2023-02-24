@@ -29,9 +29,15 @@
       "mode": "view"
     },
     {
-      "name": "search_typedcontext",
+      "name": "search_typed_context",
       "title": "Objects",
       "description": "Search ftrack objects",
+      "mode": "view"
+    },
+    {
+      "name": "search_review_sessions",
+      "title": "Reviews",
+      "description": "Search ftrack reviews",
       "mode": "view"
     }
   ],

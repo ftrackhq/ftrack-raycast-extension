@@ -8,7 +8,7 @@ import {
   Icon,
 } from "@raycast/api";
 import ChangeStatusCommand from "./change_status";
-import SearchTypedContextCommand from "./search_typedcontext";
+import SearchTypedContextCommand from "./search_typed_context";
 import SearchVersionsCommand from "./search_versions";
 // import SearchObjectsCommand from "./search_typedcontext";
 // import SearchVersionsCommand from "./search_versions";
@@ -16,6 +16,7 @@ import {
   AssetVersionEntity,
   Preferences,
   ProjectEntity,
+  ReviewSessionEntity,
   SearchableEntity,
   TypedContextEntity,
 } from "./types";
@@ -188,6 +189,40 @@ export const configuration = {
       </ActionPanel>
     ),
   } as EntityListItemConfiguration<ProjectEntity>,
+  ReviewSession: {
+    namePlural: "reviews",
+    projection: ["id", "name", "is_open", "thumbnail_url", "created_at"],
+    order: "created_at desc",
+    title: (entity) => entity.name,
+    subtitle: (entity) => entity.created_at.toDate(),
+    thumbnail: (entity) => entity.thumbnail_url.value,
+    accessories: (entity) => [
+      {
+        tag: {
+          value: entity.is_open ? "Open" : "Closed",
+          color: entity.is_open ? Color.Green : Color.SecondaryText,
+        },
+      }
+    ],
+    actions: (entity) => (
+      <ActionPanel>
+        <Action.OpenInBrowser
+          url={`${preferences.ftrackServerUrl}/#itemId=projects&entityType=reviewsession&entityId=${entity.id}`}
+        />
+        <Action.OpenInBrowser
+          title="Play"
+          icon={Icon.Play}
+          url={`${preferences.ftrackServerUrl}/player/review/${entity.id}`}
+          shortcut={{ modifiers: ["cmd"], key: "p" }}
+        />
+        <Action.CopyToClipboard
+          title="Copy Entity ID"
+          content={entity.id}
+          shortcut={{ modifiers: ["cmd"], key: "i" }}
+        />
+      </ActionPanel>
+    ),
+  } as EntityListItemConfiguration<ReviewSessionEntity>,
   TypedContext: {
     namePlural: "objects",
     projection: [
