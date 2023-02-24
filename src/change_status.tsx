@@ -13,13 +13,12 @@ import { buildExpression } from "./util/buildExpression";
 import { operation, Session } from "@ftrack/api";
 import { updateEntity } from "./util/updateEntity";
 import { Status } from "./types";
+import { session } from "./util/session";
 
 async function getStatusOptions({
-  session,
   entityType,
   entityId,
 }: {
-  session: Session;
   entityType: string;
   entityId: string;
 }) {
@@ -55,19 +54,17 @@ async function getStatusOptions({
 }
 
 export default function ChangeStatusCommand({
-  session,
-  entityType = "Task",
+  entityType = "TypedContext",
   entityId,
   onStatusChanged = () => ({}),
 }: {
-  session: Session;
   entityType: string;
   entityId: string;
-  onStatusChanged: () => void;
+  onStatusChanged?: () => void;
 }) {
-  const { data, isLoading, mutate } = usePromise(
-    getStatusOptions.bind(null, { session, entityType, entityId })
-  );
+  const { data, isLoading, mutate } = usePromise(getStatusOptions, [
+    { entityType, entityId },
+  ]);
   const { pop } = useNavigation();
 
   const mutateEntity = async (values: { status_id: string }) => {
@@ -79,7 +76,7 @@ export default function ChangeStatusCommand({
       await mutate(updateEntity({ session, entityType, entityId, values }));
       toast.style = Toast.Style.Success;
       toast.title = "Status changed";
-      onStatusChanged();
+      onStatusChanged?.();
       pop();
     } catch (error) {
       toast.style = Toast.Style.Failure;

@@ -84,7 +84,6 @@ export default function AssignedTasksCommand() {
                 icon={Icon.ArrowRightCircle}
                 target={
                   <ChangeStatusCommand
-                    session={session}
                     entityType="Task"
                     entityId={task.id}
                     onStatusChanged={revalidate}

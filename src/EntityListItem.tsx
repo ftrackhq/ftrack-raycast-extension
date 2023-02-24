@@ -7,6 +7,7 @@ import {
   getPreferenceValues,
   Icon,
 } from "@raycast/api";
+import ChangeStatusCommand from "./change_status";
 import SearchTypedContextCommand from "./search_typedcontext";
 import SearchVersionsCommand from "./search_versions";
 // import SearchObjectsCommand from "./search_typedcontext";
@@ -29,11 +30,13 @@ function toSentenceCase(value: string) {
 interface EntityListItemProps<EntityType = any> {
   entity: EntityType;
   configuration: EntityListItemConfiguration<EntityType>;
+  revalidate: () => void;
 }
 
 export function EntityListItem({
   entity,
   configuration,
+  revalidate,
   ...props
 }: EntityListItemProps) {
   return (
@@ -47,7 +50,7 @@ export function EntityListItem({
         }
       }
       accessories={configuration.accessories?.(entity)}
-      actions={configuration.actions?.(entity)}
+      actions={configuration.actions?.(entity, { revalidate })}
       {...props}
     />
   );
@@ -61,7 +64,10 @@ interface EntityListItemConfiguration<EntityType = SearchableEntity> {
   subtitle?: (entity: EntityType) => List.Item.Props["subtitle"];
   thumbnail?: (entity: EntityType) => Image.Source;
   accessories?: (entity: EntityType) => List.Item.Props["accessories"];
-  actions?: (entity: EntityType) => List.Item.Props["actions"];
+  actions?: (
+    entity: EntityType,
+    { revalidate }: { revalidate: () => void }
+  ) => List.Item.Props["actions"];
 }
 
 export const configuration = {
@@ -87,7 +93,7 @@ export const configuration = {
     accessories: (entity) => [
       { tag: { value: entity.status.name, color: entity.status.color } },
     ],
-    actions: (entity) => (
+    actions: (entity, { revalidate }) => (
       <ActionPanel>
         <Action.OpenInBrowser
           url={`${preferences.ftrackServerUrl}/#itemId=home&slideEntityType=assetversion&slideEntityId=${entity.id}`}
@@ -96,6 +102,17 @@ export const configuration = {
           title="Play"
           icon={Icon.Play}
           url={`${preferences.ftrackServerUrl}/player/version/${entity.id}`}
+        />
+        <Action.Push
+          title="Change Status"
+          icon={Icon.ArrowRightCircle}
+          target={
+            <ChangeStatusCommand
+              entityType="AssetVersion"
+              entityId={entity.id}
+              onStatusChanged={revalidate}
+            />
+          }
         />
       </ActionPanel>
     ),
@@ -208,11 +225,24 @@ export const configuration = {
         },
       },
     ],
-    actions: (entity) => (
+    actions: (entity, { revalidate }) => (
       <ActionPanel>
         <Action.OpenInBrowser
           url={`${preferences.ftrackServerUrl}/#itemId=home&slideEntityType=task&slideEntityId=${entity.id}`}
         />
+        {entity.object_type.is_statusable ? (
+          <Action.Push
+            title="Change Status"
+            icon={Icon.ArrowRightCircle}
+            target={
+              <ChangeStatusCommand
+                entityType="TypedContext"
+                entityId={entity.id}
+                onStatusChanged={revalidate}
+              />
+            }
+          />
+        ) : null}
         <Action.OpenInBrowser
           title="Play"
           icon={Icon.Play}

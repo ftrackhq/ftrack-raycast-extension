@@ -51,13 +51,18 @@ export default function SearchEntitiesCommand({
   defaultSearchText?: string;
 }) {
   const [searchText, setSearchText] = useState(defaultSearchText);
-  const { data, isLoading } = usePromise(searchEntities, [
+  const { data, isLoading, revalidate } = usePromise(searchEntities, [
     entityType,
     searchText,
   ]);
 
   return (
-    <List onSearchTextChange={setSearchText} isLoading={isLoading}>
+    <List
+      filtering={false}
+      onSearchTextChange={setSearchText}
+      searchText={searchText}
+      isLoading={isLoading}
+    >
       {data?.map((entity) => {
         const entityConfig = configuration[entityType];
         return (
@@ -65,6 +70,7 @@ export default function SearchEntitiesCommand({
             key={entity.id}
             configuration={entityConfig}
             entity={entity}
+            revalidate={revalidate}
           />
         );
       })}
