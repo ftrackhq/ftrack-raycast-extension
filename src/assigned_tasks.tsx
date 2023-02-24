@@ -4,7 +4,7 @@ import { List, getPreferenceValues } from "@raycast/api";
 import { usePromise } from "@raycast/utils";
 import { buildExpression } from "./util/buildExpression";
 import { session } from "./util/session";
-import { Preferences, Task } from "./types";
+import { Preferences, TypedContextEntity } from "./types";
 import { configuration, EntityListItem } from "./EntityListItem";
 
 const preferences = getPreferenceValues<Preferences>();
@@ -33,7 +33,7 @@ async function getAssignedTasks() {
   });
 
   const response = await session.query(expression);
-  return response.data as Task[];
+  return response.data as TypedContextEntity[];
 }
 
 export default function AssignedTasksCommand() {
