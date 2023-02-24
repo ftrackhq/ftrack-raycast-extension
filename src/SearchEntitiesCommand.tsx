@@ -13,7 +13,8 @@ type SearchableEntityTypes = keyof typeof configuration;
 const searchRegex = new RegExp("(?:context_id:([\\w-]+))?(.*)");
 async function searchEntities(
   entityType: SearchableEntityTypes,
-  searchText = ""
+  searchText = "",
+  contextId = ""
 ) {
   console.debug(`Searching ${entityType}: ${searchText}`);
   const expression = buildExpression({
@@ -26,17 +27,15 @@ async function searchEntities(
   });
 
   const matches = searchText.match(searchRegex);
-  const contextId = matches?.[1];
+  const searchContextId = matches?.[1] || contextId;
   const terms = (matches?.[2] ?? '').split(" ") ?? [];
-  console.debug(
-    `contextId=${contextId}, terms=${terms}`
-  );
+  console.debug(`contextId=${searchContextId}, terms=${terms}`);
 
   const response = await session.search({
     expression,
     entityType,
     terms,
-    contextId,
+    contextId: searchContextId,
   });
 
   console.debug(`Found ${response.data.length} items`);
@@ -46,14 +45,19 @@ async function searchEntities(
 export default function SearchEntitiesCommand({
   entityType = "Project",
   defaultSearchText = "",
+  contextId = "",
+  placeholder,
 }: {
   entityType: SearchableEntityTypes;
   defaultSearchText?: string;
+  contextId?: string;
+  placeholder?: string;
 }) {
   const [searchText, setSearchText] = useState(defaultSearchText);
   const { data, isLoading, revalidate } = usePromise(searchEntities, [
     entityType,
     searchText,
+    contextId,
   ]);
 
   return (
@@ -62,6 +66,8 @@ export default function SearchEntitiesCommand({
       onSearchTextChange={setSearchText}
       searchText={searchText}
       isLoading={isLoading}
+      navigationTitle={placeholder}
+      searchBarPlaceholder={placeholder}
     >
       {data?.map((entity) => {
         const entityConfig = configuration[entityType];

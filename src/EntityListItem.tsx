@@ -10,8 +10,7 @@ import {
 import ChangeStatusCommand from "./change_status";
 import SearchTypedContextCommand from "./search_typed_context";
 import SearchVersionsCommand from "./search_versions";
-// import SearchObjectsCommand from "./search_typedcontext";
-// import SearchVersionsCommand from "./search_versions";
+
 import {
   AssetVersionEntity,
   ListEntity,
@@ -167,17 +166,19 @@ export const configuration = {
           icon={Icon.MagnifyingGlass}
           target={
             <SearchVersionsCommand
-              defaultSearchText={`context_id:${entity.id}`}
+              placeholder={`Search Versions in ${entity.full_name}`}
+              contextId={entity.id}
             />
           }
-          shortcut={{ modifiers: ["cmd"], key: "v" }}
+          shortcut={{ modifiers: ["cmd", "opt"], key: "v" }}
         />
         <Action.Push
           title="Search Objects"
           icon={Icon.MagnifyingGlass}
           target={
             <SearchTypedContextCommand
-              defaultSearchText={`context_id:${entity.id}`}
+              placeholder={`Search Objects in ${entity.full_name}`}
+              contextId={entity.id}
             />
           }
           shortcut={{ modifiers: ["cmd"], key: "o" }}
@@ -347,17 +348,19 @@ export const configuration = {
           icon={Icon.MagnifyingGlass}
           target={
             <SearchVersionsCommand
-              defaultSearchText={`context_id:${entity.id}`}
+              placeholder={`Search Versions in ${entity.name}`}
+              contextId={entity.id}
             />
           }
-          shortcut={{ modifiers: ["cmd"], key: "v" }}
+          shortcut={{ modifiers: ["cmd", "opt"], key: "v" }}
         />
         <Action.Push
           title="Search Objects"
           icon={Icon.MagnifyingGlass}
           target={
             <SearchTypedContextCommand
-              defaultSearchText={`context_id:${entity.id}`}
+              placeholder={`Search Objects in ${entity.name}`}
+              contextId={entity.id}
             />
           }
           shortcut={{ modifiers: ["cmd"], key: "o" }}
