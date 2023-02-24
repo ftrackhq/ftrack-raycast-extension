@@ -23,6 +23,8 @@ async function getAssignedTasks() {
   const filters = [
     `assignments.resource.username is "${session.apiUser}"`,
     "status.state.short is_not 'DONE'",
+    "project.status is_not 'hidden'",
+    "ancestors.status.state.short is_not 'BLOCKED'",
   ];
   if (preferences.assignedTasksFilter) {
     filters.push(preferences.assignedTasksFilter);
