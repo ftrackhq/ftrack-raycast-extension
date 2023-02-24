@@ -292,7 +292,7 @@ export const configuration = {
       {
         tag: {
           value: entity.object_type.is_typeable
-            ? `${entity.type.name} (${entity.object_type.name})`
+            ? entity.type.name
             : entity.object_type.name,
           color: entity.object_type.is_typeable ? entity.type.color : null,
         },
