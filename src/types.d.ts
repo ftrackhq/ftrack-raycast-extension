@@ -75,8 +75,20 @@ interface ReviewSessionEntity extends Entity {
   created_at: { toDate: () => Date };
 }
 
+interface ListEntity extends Entity {
+  id: string;
+  name: string;
+  is_open: boolean;
+  project: {
+    full_name: string;
+    thumbnail_url: { value: string };
+  };
+  category: { name: string };
+}
+
 export type SearchableEntity =
   | AssetVersionEntity
   | ProjectEntity
   | TypedContextEntity
-  | ReviewSessionEntity;
+  | ReviewSessionEntity
+  | ListEntity;

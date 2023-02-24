@@ -14,6 +14,7 @@ import SearchVersionsCommand from "./search_versions";
 // import SearchVersionsCommand from "./search_versions";
 import {
   AssetVersionEntity,
+  ListEntity,
   Preferences,
   ProjectEntity,
   ReviewSessionEntity,
@@ -202,7 +203,7 @@ export const configuration = {
           value: entity.is_open ? "Open" : "Closed",
           color: entity.is_open ? Color.Green : Color.SecondaryText,
         },
-      }
+      },
     ],
     actions: (entity) => (
       <ActionPanel>
@@ -223,6 +224,47 @@ export const configuration = {
       </ActionPanel>
     ),
   } as EntityListItemConfiguration<ReviewSessionEntity>,
+  List: {
+    namePlural: "lists",
+    projection: [
+      "id",
+      "name",
+      "is_open",
+      "project.thumbnail_url",
+      "project.full_name",
+      "category.name",
+    ],
+    order: "project.full_name, category.name, name",
+    title: (entity) => entity.name,
+    subtitle: (entity) => entity.category.name,
+    thumbnail: (entity) => entity.project.thumbnail_url.value,
+    accessories: (entity) => [
+      {
+        tag: {
+          value: entity.is_open ? "Open" : "Closed",
+          color: entity.is_open ? Color.Green : Color.SecondaryText,
+        },
+      },
+    ],
+    actions: (entity) => (
+      <ActionPanel>
+        <Action.OpenInBrowser
+          url={`${preferences.ftrackServerUrl}/#itemId=projects&entityType=list&entityId=${entity.id}`}
+        />
+        <Action.OpenInBrowser
+          title="Play"
+          icon={Icon.Play}
+          url={`${preferences.ftrackServerUrl}/player/list/${entity.id}`}
+          shortcut={{ modifiers: ["cmd"], key: "p" }}
+        />
+        <Action.CopyToClipboard
+          title="Copy Entity ID"
+          content={entity.id}
+          shortcut={{ modifiers: ["cmd"], key: "i" }}
+        />
+      </ActionPanel>
+    ),
+  } as EntityListItemConfiguration<ListEntity>,
   TypedContext: {
     namePlural: "objects",
     projection: [
