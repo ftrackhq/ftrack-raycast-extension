@@ -85,7 +85,8 @@
     "@ftrack/api": "^1.4.0",
     "@raycast/api": "^1.48.5",
     "@raycast/utils": "^1.4.18",
-    "cross-fetch": "^3.1.5"
+    "cross-fetch": "^3.1.5",
+    "slugify": "^1.6.5"
   },
   "devDependencies": {
     "@types/node": "18.14.2",

@@ -7,6 +7,7 @@ import {
   getPreferenceValues,
   Icon,
 } from "@raycast/api";
+import slugify from "slugify";
 import ChangeStatusCommand from "./ChangeStatusCommand";
 import SearchListCommand from "./search_list";
 import SearchReviewSessionsCommand from "./search_review_sessions";
@@ -41,6 +42,13 @@ function formatDate(date: string) {
 
 function toSentenceCase(value: string) {
   return value.charAt(0).toUpperCase() + value.substring(1);
+}
+
+function linkToPath(link: { name: string }[]) {
+  return link
+    .slice(1)
+    .map((item) => slugify(item.name, { lower: true }))
+    .join("/");
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -407,6 +415,11 @@ export const configuration = {
           title="Copy Entity ID"
           content={entity.id}
           shortcut={{ modifiers: ["cmd"], key: "i" }}
+        />
+        <Action.CopyToClipboard
+          title="Copy Branch Name"
+          content={linkToPath(entity.link)}
+          shortcut={{ modifiers: ["cmd", "opt"], key: "p" }}
         />
       </ActionPanel>
     ),
