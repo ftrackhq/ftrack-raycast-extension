@@ -28,15 +28,18 @@ async function searchEntities(
 
   const matches = searchText.match(searchRegex);
   const searchContextId = matches?.[1] || contextId;
-  const terms = (matches?.[2] ?? '').split(" ") ?? [];
+  const terms = (matches?.[2] ?? "").split(" ") ?? [];
   console.debug(`contextId=${searchContextId}, terms=${terms}`);
 
-  const response = await session.search({
-    expression,
-    entityType,
-    terms,
-    contextId: searchContextId,
-  });
+  const response = await session.search(
+    {
+      expression,
+      entityType,
+      terms,
+      contextId: searchContextId,
+    },
+    { decodeDatesAsIso: true }
+  );
 
   console.debug(`Found ${response.data.length} items`);
   return response.data as SearchableEntity[];

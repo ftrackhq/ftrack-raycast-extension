@@ -35,10 +35,10 @@ async function getStatusOptions({
     limit: 1,
   });
 
-  const [statusResponse, taskResponse] = await session.call([
-    operation.query(statusQuery),
-    operation.query(taskQuery),
-  ]);
+  const [statusResponse, taskResponse] = await session.call(
+    [operation.query(statusQuery), operation.query(taskQuery)],
+    { decodeDatesAsIso: true }
+  );
 
   const allowedStatusIds =
     taskResponse.data[0].__permissions.status_id.__options;

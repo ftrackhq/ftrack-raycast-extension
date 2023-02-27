@@ -7,7 +7,7 @@ import {
   getPreferenceValues,
   Icon,
 } from "@raycast/api";
-import ChangeStatusCommand from "./change_status";
+import ChangeStatusCommand from "./ChangeStatusCommand";
 import SearchListCommand from "./search_list";
 import SearchReviewSessionsCommand from "./search_review_sessions";
 import SearchTypedContextCommand from "./search_typed_context";
@@ -24,6 +24,20 @@ import {
 } from "./types";
 
 const preferences = getPreferenceValues<Preferences>();
+
+const currentLocale = Intl.DateTimeFormat().resolvedOptions().locale;
+
+function formatDate(date: string) {
+  if (!date) {
+    return "";
+  }
+
+  return new Date(date).toLocaleDateString(currentLocale, {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+}
 
 function toSentenceCase(value: string) {
   return value.charAt(0).toUpperCase() + value.substring(1);
@@ -149,7 +163,7 @@ export const configuration = {
         },
       },
       {
-        date: entity.end_date?.toDate(),
+        date: entity.end_date ? new Date(entity.end_date) : null,
       },
     ],
     actions: (entity) => (
@@ -220,7 +234,7 @@ export const configuration = {
     projection: ["id", "name", "is_open", "thumbnail_url", "created_at"],
     order: "created_at desc",
     title: (entity) => entity.name,
-    subtitle: (entity) => entity.created_at.toDate(),
+    subtitle: (entity) => formatDate(entity.created_at),
     thumbnail: (entity) => entity.thumbnail_url.value,
     accessories: (entity) => [
       {
@@ -333,7 +347,7 @@ export const configuration = {
         },
       },
       {
-        date: entity.end_date?.toDate(),
+        date: entity.end_date ? new Date(entity.end_date) : null,
       },
       {
         tag: {

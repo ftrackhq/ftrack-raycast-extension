@@ -28,7 +28,7 @@ interface ProjectEntity extends Entity {
   thumbnail_url: { value: string };
   status: string;
   project_schema: { name: string };
-  end_date: { toDate: () => Date };
+  end_date: string;
 }
 
 interface TypedContextEntity extends Entity {
@@ -44,7 +44,7 @@ interface TypedContextEntity extends Entity {
     is_prioritizable: boolean;
     is_typeable: boolean;
   };
-  end_date: { toDate: () => Date };
+  end_date: string;
 }
 
 interface ReviewSessionEntity extends Entity {
@@ -52,7 +52,7 @@ interface ReviewSessionEntity extends Entity {
   name: string;
   is_open: boolean;
   thumbnail_url: { value: string };
-  created_at: { toDate: () => Date };
+  created_at: string;
 }
 
 interface ListEntity extends Entity {
