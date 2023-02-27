@@ -15,6 +15,36 @@
       "title": "Assigned Tasks",
       "description": "Show assigned tasks",
       "mode": "view"
+    },
+    {
+      "name": "search_projects",
+      "title": "Projects",
+      "description": "Search ftrack projects",
+      "mode": "view"
+    },
+    {
+      "name": "search_versions",
+      "title": "Versions",
+      "description": "Search ftrack projects",
+      "mode": "view"
+    },
+    {
+      "name": "search_typed_context",
+      "title": "Objects",
+      "description": "Search ftrack objects",
+      "mode": "view"
+    },
+    {
+      "name": "search_list",
+      "title": "Lists",
+      "description": "Search ftrack lists",
+      "mode": "view"
+    },
+    {
+      "name": "search_review_sessions",
+      "title": "Reviews",
+      "description": "Search ftrack reviews",
+      "mode": "view"
     }
   ],
   "preferences": [
