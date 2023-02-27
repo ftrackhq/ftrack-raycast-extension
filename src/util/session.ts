@@ -8,5 +8,6 @@ const preferences = getPreferenceValues<Preferences>();
 export const session = new Session(
   preferences.ftrackServerUrl,
   preferences.ftrackApiUser,
-  preferences.ftrackApiKey
+  preferences.ftrackApiKey,
+  { strictApi: true }
 );

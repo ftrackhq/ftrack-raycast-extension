@@ -13,7 +13,9 @@ export async function updateEntity({
   values: object;
 }) {
   console.debug("Updating", entityType, entityId, values);
-  const response = await session.update(entityType, [entityId], values);
+  const response = await session.update(entityType, [entityId], values, {
+    decodeDatesAsIso: true,
+  });
   console.debug("Update", response);
   return response;
 }
