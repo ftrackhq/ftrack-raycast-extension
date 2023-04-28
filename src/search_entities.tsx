@@ -8,11 +8,11 @@ import { session } from "./util/session";
 import { useState } from "react";
 import { SearchableEntity } from "./types";
 
-type SearchableEntityTypes = keyof typeof configuration;
+type SearchableEntityType = keyof typeof configuration;
 
 const searchRegex = new RegExp("(?:context_id:([\\w-]+))?(.*)");
 async function searchEntities(
-  entityType: SearchableEntityTypes,
+  entityType: SearchableEntityType,
   searchText = "",
   contextId = ""
 ) {
@@ -45,13 +45,37 @@ async function searchEntities(
   return response.data as SearchableEntity[];
 }
 
-export default function SearchEntitiesCommand({
+function EntityTypeDropdown(props: {
+  value: SearchableEntityType;
+  onChange: (newValue: string) => void;
+}) {
+  const options = Object.entries(configuration).map(([key, value]) => ({
+    id: key,
+    name: value.namePlural.charAt(0).toUpperCase() + value.namePlural.slice(1),
+  }));
+  const { onChange } = props;
+  return (
+    <List.Dropdown
+      tooltip="Select type"
+      value={props.value}
+      onChange={onChange}
+    >
+      {options.map((item) => (
+        <List.Dropdown.Item key={item.id} title={item.name} value={item.id} />
+      ))}
+    </List.Dropdown>
+  );
+}
+
+function SearchEntitiesList({
   entityType = "Project",
+  onEntityTypeChange,
   defaultSearchText = "",
   contextId = "",
   placeholder,
 }: {
-  entityType: SearchableEntityTypes;
+  entityType?: SearchableEntityType;
+  onEntityTypeChange: (entityType: SearchableEntityType) => void;
   defaultSearchText?: string;
   contextId?: string;
   placeholder?: string;
@@ -71,6 +95,14 @@ export default function SearchEntitiesCommand({
       isLoading={isLoading}
       navigationTitle={placeholder}
       searchBarPlaceholder={placeholder}
+      searchBarAccessory={
+        <EntityTypeDropdown
+          value={entityType}
+          onChange={(value) => {
+            onEntityTypeChange(value as SearchableEntityType);
+          }}
+        />
+      }
     >
       {data?.map((entity) => {
         const entityConfig = configuration[entityType];
@@ -90,5 +122,26 @@ export default function SearchEntitiesCommand({
         />
       ) : null}
     </List>
+  );
+}
+
+export default function SearchEntitiesCommand({
+  entityType = "Project",
+  ...props
+}: {
+  entityType?: SearchableEntityType;
+  placeholder?: string;
+  contextId?: string;
+}) {
+  const [selectedEntityType, setEntityType] =
+    useState<SearchableEntityType>(entityType);
+
+  return (
+    <SearchEntitiesList
+      key={selectedEntityType}
+      entityType={selectedEntityType}
+      onEntityTypeChange={setEntityType}
+      {...props}
+    />
   );
 }

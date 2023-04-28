@@ -9,10 +9,7 @@ import {
 } from "@raycast/api";
 import slugify from "slugify";
 import ChangeStatusCommand from "./ChangeStatusCommand";
-import SearchListCommand from "./search_list";
-import SearchReviewSessionsCommand from "./search_review_sessions";
-import SearchTypedContextCommand from "./search_typed_context";
-import SearchVersionsCommand from "./search_versions";
+import SearchEntitiesCommand from "./search_entities";
 
 import {
   AssetVersionEntity,
@@ -189,7 +186,9 @@ export const configuration = {
           title="Search Versions"
           icon={Icon.MagnifyingGlass}
           target={
-            <SearchVersionsCommand
+            <SearchEntitiesCommand
+              key={`${entity.id}--AssetVesion`}
+              entityType="AssetVersion"
               placeholder={`Search Versions in ${entity.full_name}`}
               contextId={entity.id}
             />
@@ -200,7 +199,9 @@ export const configuration = {
           title="Search Objects"
           icon={Icon.MagnifyingGlass}
           target={
-            <SearchTypedContextCommand
+            <SearchEntitiesCommand
+              key={`${entity.id}--TypedCotext`}
+              entityType="TypedContext"
               placeholder={`Search Objects in ${entity.full_name}`}
               contextId={entity.id}
             />
@@ -211,7 +212,9 @@ export const configuration = {
           title="Search Reviews"
           icon={Icon.MagnifyingGlass}
           target={
-            <SearchReviewSessionsCommand
+            <SearchEntitiesCommand
+              key={`${entity.id}--ReviewSesion`}
+              entityType="ReviewSession"
               placeholder={`Search Reviews in ${entity.full_name}`}
               contextId={entity.id}
             />
@@ -222,7 +225,9 @@ export const configuration = {
           title="Search Lists"
           icon={Icon.MagnifyingGlass}
           target={
-            <SearchListCommand
+            <SearchEntitiesCommand
+              key={`${entity.id}-List`}
+              entityType="List"
               placeholder={`Search Lists in ${entity.full_name}`}
               contextId={entity.id}
             />
@@ -393,7 +398,9 @@ export const configuration = {
           title="Search Versions"
           icon={Icon.MagnifyingGlass}
           target={
-            <SearchVersionsCommand
+            <SearchEntitiesCommand
+              key={`${entity.id}-AssetVersion`}
+              entityType="AssetVersion"
               placeholder={`Search Versions in ${entity.name}`}
               contextId={entity.id}
             />
@@ -404,7 +411,9 @@ export const configuration = {
           title="Search Objects"
           icon={Icon.MagnifyingGlass}
           target={
-            <SearchTypedContextCommand
+            <SearchEntitiesCommand
+              key={`${entity.id}-TypedContext`}
+              entityType="TypedContext"
               placeholder={`Search Objects in ${entity.name}`}
               contextId={entity.id}
             />
