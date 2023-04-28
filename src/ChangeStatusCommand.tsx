@@ -10,7 +10,7 @@ import {
 } from "@raycast/api";
 import { usePromise } from "@raycast/utils";
 import { buildExpression } from "./util/buildExpression";
-import { operation } from "@ftrack/api";
+import { operation, QueryResponse } from "@ftrack/api";
 import { updateEntity } from "./util/updateEntity";
 import { Status } from "./types";
 import { session } from "./util/session";
@@ -28,24 +28,25 @@ async function getStatusOptions({
     order: "sort desc, name asc",
     limit: 200,
   });
-  const taskQuery = buildExpression({
+  const entityQuery = buildExpression({
     entityType: entityType,
     projection: ["status_id", "__permissions.status_id"],
     filter: [`id is "${entityId}"`],
     limit: 1,
   });
 
-  const [statusResponse, taskResponse] = await session.call(
-    [operation.query(statusQuery), operation.query(taskQuery)],
-    { decodeDatesAsIso: true }
-  );
+  const [statusResponse, entityResponse] = await session.call<
+    [QueryResponse<Status>, QueryResponse]
+  >([operation.query(statusQuery), operation.query(entityQuery)], {
+    decodeDatesAsIso: true,
+  });
 
   const allowedStatusIds =
-    taskResponse.data[0].__permissions.status_id.__options;
-  const validStatuses = (statusResponse.data as Status[]).filter((status) =>
+    entityResponse.data[0].__permissions.status_id.__options;
+  const validStatuses = statusResponse.data.filter((status) =>
     allowedStatusIds.includes(status.id)
   );
-  const defaultValue = taskResponse.data[0].status_id as string;
+  const defaultValue = entityResponse.data[0].status_id as string;
 
   return {
     options: validStatuses,
